@@ -1,3 +1,18 @@
+async function createCustomer() {
+  await fetch("/customer", {
+    method: "POST",
+    body: JSON.stringify({
+      firstName: `${document.getElementById("firstName").value}`,
+      lastName: `${document.getElementById("lastName").value}`,
+      state: `${document.getElementById("state").value}`,
+    }),
+    headers: {
+      "content-type": "application/json",
+    },
+  }).then((result) => result.json());
+  await loadCustomerData();
+}
+
 async function loadCustomerData() {
   await fetch("/customer")
     .then((result) => result.json())
@@ -42,6 +57,12 @@ async function loadCustomerData() {
 
         table.appendChild(customerTableRow);
       });
+
+      // destroy table if it exists already
+      const preExistingTable = document.getElementById("customerInfo");
+      if (preExistingTable) {
+        preExistingTable.remove();
+      }
 
       document.body.appendChild(table);
     });
